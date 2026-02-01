@@ -1,7 +1,7 @@
 "use client"
 
 import { cn } from "@/lib/utils"
-import React from "react"
+import React, { useEffect, useState } from "react"
 
 export const Meteors = ({
   number,
@@ -10,10 +10,30 @@ export const Meteors = ({
   number?: number
   className?: string
 }) => {
-  const meteors = new Array(number || 20).fill(true)
+  const [meteors, setMeteors] = useState<Array<{
+    left: number
+    animationDelay: number
+    animationDuration: number
+  }>>([])
+
+  useEffect(() => {
+    // Generate meteor properties only on client side
+    const meteorArray = new Array(number || 20).fill(true).map((_, idx) => ({
+      left: Math.floor(Math.random() * (400 - -400) + -400),
+      animationDelay: Math.random() * (0.8 - 0.2) + 0.2,
+      animationDuration: Math.floor(Math.random() * (10 - 2) + 2),
+    }))
+    setMeteors(meteorArray)
+  }, [number])
+
+  // Don't render anything on server side
+  if (meteors.length === 0) {
+    return null
+  }
+
   return (
     <>
-      {meteors.map((el, idx) => (
+      {meteors.map((meteor, idx) => (
         <span
           key={"meteor" + idx}
           className={cn(
@@ -23,9 +43,9 @@ export const Meteors = ({
           )}
           style={{
             top: 0,
-            left: Math.floor(Math.random() * (400 - -400) + -400) + "px",
-            animationDelay: Math.random() * (0.8 - 0.2) + 0.2 + "s",
-            animationDuration: Math.floor(Math.random() * (10 - 2) + 2) + "s",
+            left: meteor.left + "px",
+            animationDelay: meteor.animationDelay + "s",
+            animationDuration: meteor.animationDuration + "s",
           }}
         ></span>
       ))}
