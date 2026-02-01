@@ -2,6 +2,8 @@
 
 A professional Streamlit web application for customer segmentation using K-Means clustering. This app allows you to input customer characteristics and predict which segment they belong to, along with detailed insights and recommendations.
 
+🚀 **Status**: Deployed and Live on Vercel
+
 ## Features
 
 - **Customer Segmentation**: Predict customer segments using machine learning
